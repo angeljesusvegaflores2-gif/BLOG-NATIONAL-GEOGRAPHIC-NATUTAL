@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Explora la Tierra — Revista Visual · Blog NatGeo Style</title>
+
+  <!-- Fuentes (blog: Lato, Open Sans, Roboto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700&family=Open+Sans:wght@400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* Paleta basada en el BLOG (clara) adaptada a elementos visuales */
+      --bg-main: #ffffff;
+      --bg-soft: #f6f8fa;
+      --card-bg: #ffffff;
+      --text-main: #2f3a46;
+      --text-strong: #0f1720;
+      --text-muted: #6b7280;
+      --primary: #2a6f97;      /* azul */
+      --primary-900: #1f4f6d;
+      --primary-soft: #e6f2f8;
+      --accent: #ffcc00;       /* NatGeo touch */
+      --secondary: #6baa75;    /* verde tenue */
+      --border: #e6e9ec;
+      --shadow: 0 18px 40px rgba(15,23,42,0.06);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-pill: 999px;
+      --max-width: 1180px;
+      --focus: 3px rgba(42,111,151,0.12);
+    }
+
+    /* Reset básico */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:"Open Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg-soft);
+      color:var(--text-main);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.6;
+      -webkit-tap-highlight-color: transparent;
+    }
+    img{max-width:100%;display:block}
+    a{color:var(--primary);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Container */
+    .container{max-width:var(--max-width);margin:0 auto;padding:0 1.25rem}
+
+    /* Header */
+    header{
+      position:sticky;top:0;z-index:90;
+      background:rgba(255,255,255,0.95);
+      border-bottom:1px solid var(--border);
+      backdrop-filter: blur(6px);
+    }
+    .header-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0.9rem 0}
+    .brand{display:flex;align-items:center;gap:0.8rem}
+    .brand-square{width:42px;height:28px;border:3px solid var(--accent);box-shadow:0 0 0 1px rgba(255,204,0,0.25);border-radius:4px;background:linear-gradient(180deg,#fffbe9,#fff0b2)}
+    .brand-text{display:flex;flex-direction:column;gap:0.05rem}
+    .brand-text span:first-child{font-family:"Roboto",sans-serif;font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-muted)}
+    .brand-text span:last-child{font-family:"Roboto",sans-serif;font-weight:700;font-size:0.88rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-strong)}
+
+    nav{display:flex;align-items:center;gap:1rem}
+    .nav-links{list-style:none;display:flex;gap:1.2rem;align-items:center}
+    .nav-links a{font-family:"Lato",sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);position:relative;padding:0.3rem 0}
+    .nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:-0.22rem;height:2px;background:var(--primary);width:0;transition:width .18s}
+    .nav-links a:hover::after{width:100%}
+    .nav-cta{padding:0.5rem 0.95rem;border-radius:var(--radius-pill);background:var(--primary);color:#fff;border:none;font-weight:600;cursor:pointer;box-shadow:0 10px 24px rgba(42,111,151,0.2)}
+    .nav-toggle{display:none;border:none;background:none;cursor:pointer;padding:0.35rem}
+
+    /* Responsive nav */
+    @media (max-width:900px){
+      .nav-links{position:fixed;inset:60px 0 auto 0;background:var(--bg-main);flex-direction:column;padding:1rem;border-bottom:1px solid var(--border);transform:scaleY(0);transform-origin:top;opacity:0;pointer-events:none}
+      body.nav-open .nav-links{transform:scaleY(1);opacity:1;pointer-events:auto}
+      .nav-cta{display:none}
+      .nav-toggle{display:block}
+    }
+
+    /* HERO (revista visual hero but with blog palette) */
+    .hero{
+      position:relative;
+      min-height:72vh;
+      display:flex;align-items:center;
+      padding:3rem 0 2rem;
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;inset:0;
+      background-image: url("https://images.pexels.com/photos/6210/forest-trees-fog-foggy.jpg?auto=compress&cs=tinysrgb&w=1600");
+      background-size:cover;background-position:center;
+      filter: saturate(1.05) contrast(0.95);
+      opacity:0.62;transform:scale(1.03);
+    }
+    .hero::after{
+      content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.12));
+    }
+    .hero-inner{position:relative;z-index:10;display:grid;grid-template-columns:3fr 2fr;gap:2.2rem;align-items:center}
+    @media (max-width:920px){.hero-inner{grid-template-columns:1fr;padding:0 0 1rem}}
+
+    .hero-left .hero-kicker{font-family:"Lato",sans-serif;font-size:0.75rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--secondary);margin-bottom:0.6rem}
+    .hero-title{font-family:"Roboto",sans-serif;font-size:clamp(2rem,4vw,2.8rem);line-height:1.05;color:var(--text-strong);max-width:42ch;text-transform:uppercase}
+    .hero-title .highlight{color:var(--primary)}
+    .hero-sub{color:var(--text-muted);max-width:46ch;margin-top:0.9rem}
+    .hero-meta{display:flex;gap:0.7rem;margin:1.2rem 0;flex-wrap:wrap}
+    .pill{display:inline-flex;align-items:center;padding:0.38rem 0.85rem;border-radius:999px;background:var(--primary-soft);font-size:0.82rem;color:var(--text-strong)}
+    .pill-dot{width:8px;height:8px;border-radius:999px;background:var(--secondary);margin-right:0.5rem}
+
+    .hero-actions{display:flex;gap:0.9rem;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.78rem 1.4rem;border-radius:999px;border:none;cursor:pointer;font-weight:700;font-family:"Lato",sans-serif;letter-spacing:0.12em}
+    .btn-primary{background:var(--primary);color:#fff;box-shadow:0 12px 28px rgba(42,111,151,0.18)}
+    .btn-ghost{background:transparent;color:var(--primary);border:1px solid var(--primary)}
+    .hero-note{margin-top:0.8rem;color:var(--text-muted);font-size:0.95rem}
+
+    /* Hero side card (image card) */
+    .hero-card{background:var(--card-bg);border-radius:18px;border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+    .hero-card .imgwrap{height:220px;overflow:hidden}
+    .hero-card img{width:100%;height:100%;object-fit:cover;transform:scale(1.02)}
+    .hero-card .card-body{padding:1.2rem 1.2rem 1.3rem;display:grid;gap:0.45rem}
+    .hero-card .kicker{font-size:0.72rem;letter-spacing:0.2em;color:var(--text-muted);text-transform:uppercase}
+    .hero-card .title{font-size:1rem;font-weight:700;color:var(--text-strong)}
+    .hero-card .meta{display:flex;justify-content:space-between;color:var(--text-muted);font-size:0.82rem;margin-top:0.4rem}
+
+    /* MAIN SECTIONS */
+    section{padding:2.6rem 0}
+    .section-header{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;margin-bottom:1.4rem}
+    .section-kicker{font-family:"Lato",sans-serif;font-size:0.78rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-muted)}
+    .section-title{font-family:"Roboto",sans-serif;font-size:1.5rem;color:var(--text-strong)}
+    .section-desc{color:var(--text-muted);max-width:48ch}
+
+    /* Articles grid (image-heavy) */
+    .articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+    @media (max-width:980px){.articles-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.articles-grid{grid-template-columns:1fr}}
+    .article-card{background:var(--card-bg);border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .16s,box-shadow .16s}
+    .article-card:hover{transform:translateY(-6px);box-shadow:0 30px 60px rgba(15,23,42,0.08)}
+    .article-img{height:200px;overflow:hidden}
+    .article-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+    .article-card:hover .article-img img{transform:scale(1.06)}
+    .article-body{padding:1rem 1rem 1.1rem;display:grid;gap:0.5rem}
+    .eyebrow{font-size:0.75rem;color:var(--text-muted);letter-spacing:0.18em;text-transform:uppercase}
+    .article-title{font-size:1.05rem;font-weight:700;color:var(--text-strong)}
+    .excerpt{color:var(--text-muted);font-size:0.95rem}
+    .meta-row{display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;color:var(--text-muted);margin-top:0.5rem}
+
+    /* Poster / promo */
+    .poster{background:linear-gradient(180deg,#fff,#fdfaf0);border-radius:16px;border:1px solid var(--border);padding:1.2rem;display:grid;grid-template-columns:1.6fr 1fr;gap:1rem;align-items:center}
+    @media (max-width:820px){.poster{grid-template-columns:1fr}}
+    .poster-visual{border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+    .poster-copy{padding:0.4rem}
+    .poster-title{font-weight:700;font-size:1.05rem;color:var(--text-strong)}
+    .poster-tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.6rem}
+    .tag{padding:0.28rem 0.6rem;border-radius:999px;background:var(--primary-soft);color:var(--primary);font-size:0.78rem}
+
+    /* Grid for history / ciencia / salud (reuse articles grid) */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+    @media (max-width:900px){.two-col{grid-template-columns:1fr}}
+
+    /* Gallery */
+    .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.9rem}
+    @media (max-width:1000px){.gallery-grid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:700px){.gallery-grid{grid-template-columns:repeat(2,1fr)}}
+    .gallery-item{border-radius:10px;overflow:hidden;border:1px solid var(--border);min-height:120px;position:relative}
+    .gallery-caption{position:absolute;left:0.6rem;bottom:0.6rem;background:rgba(0,0,0,0.6);color:#fff;padding:0.28rem 0.6rem;border-radius:999px;font-size:0.78rem}
+
+    /* Forum grid */
+    .forum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+    @media (max-width:980px){.forum-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.forum-grid{grid-template-columns:1fr}}
+    .forum-card{background:var(--card-bg);border-radius:12px;padding:1rem;border:1px solid var(--border);box-shadow:var(--shadow)}
+
+    /* Newsletter / suscripciones */
+    .newsletter{background:var(--card-bg);border-radius:14px;padding:1.2rem;border:1px solid var(--border);box-shadow:var(--shadow)}
+    .newsletter input[type="email"]{width:100%;padding:0.85rem;border-radius:10px;border:1px solid var(--border);outline:none;font-size:0.95rem}
+    .newsletter .row{display:flex;gap:0.6rem;margin-top:0.8rem}
+    @media (max-width:620px){.newsletter .row{flex-direction:column}}
+
+    /* Footer */
+    footer{padding:2rem 0 2.4rem;color:var(--text-muted)}
+    .footer-inner{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:1rem}
+
+    /* Lightbox modal (basic) */
+    .modal{position:fixed;inset:0;background:rgba(11,15,20,0.6);display:flex;align-items:center;justify-content:center;padding:1.2rem;z-index:120;opacity:0;pointer-events:none;transition:opacity .18s}
+    .modal.open{opacity:1;pointer-events:auto}
+    .modal .modal-content{max-width:920px;width:100%;border-radius:12px;overflow:hidden;background:#fff}
+    .modal .modal-content img{width:100%;height:auto;display:block}
+    .modal .close{position:absolute;right:1rem;top:1rem;background:var(--primary);color:#fff;width:38px;height:38px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;border:none;cursor:pointer}
+
+    /* small helpers */
+    .muted{color:var(--text-muted);}
+    .center{display:flex;align-items:center;justify-content:center}
+    .space{height:12px}
+    /* focus ring */
+    a:focus,button:focus,input:focus{box-shadow:0 0 0 4px rgba(42,111,151,0.08);outline:none;border-radius:6px}
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-square" aria-hidden="true"></div>
+        <div class="brand-text">
+          <span>EDICIÓN ESPECIAL</span>
+          <span>EXPLORA · TIERRA</span>
+        </div>
+      </div>
+
+      <nav>
+        <ul class="nav-links" role="menubar" aria-label="Navegación principal">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#destacados">Destacados</a></li>
+          <li><a href="#historia">Historia</a></li>
+          <li><a href="#ciencia">Ciencia</a></li>
+          <li><a href="#salud">Salud</a></li>
+          <li><a href="#galeria">Galería</a></li>
+          <li><a href="#suscripciones">Suscripciones</a></li>
+        </ul>
+
+        <button class="nav-cta" onclick="openSubscribe()">Suscríbete</button>
+        <button class="nav-toggle" aria-label="Abrir menú" onclick="toggleMenu()">
+          <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="22" height="2" rx="1" fill="#1f2933"/><rect y="7" width="22" height="2" rx="1" fill="#1f2933"/><rect y="14" width="22" height="2" rx="1" fill="#1f2933"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section id="inicio" class="hero" aria-label="Hero principal">
+      <div class="container hero-inner">
+        <div class="hero-left">
+          <div class="hero-kicker">Historias reales del planeta</div>
+          <h1 class="hero-title">Animales, <span class="highlight">paisajes</span> y ciencia que inspiran a cuidar la Tierra</h1>
+          <p class="hero-sub">Explora reportajes visuales, galerías 4K y crónicas profundas sobre la vida salvaje, los bosques y los océanos. Diseño claro y navegación simple para una experiencia ágil.</p>
+
+          <div class="hero-meta">
+            <div class="pill"><span class="pill-dot"></span>Nuevos artículos cada semana</div>
+            <div class="pill">Fotogalerías • Reportajes • Microdocumentales</div>
+          </div>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="document.getElementById('destacados').scrollIntoView({behavior:'smooth'})">Ver artículos destacados</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('galeria').scrollIntoView({behavior:'smooth'})">Ver galería</button>
+          </div>
+
+          <p class="hero-note">Contenido curado y optimizado para lectura, exploración y uso educativo.</p>
+        </div>
+
+        <aside class="hero-card" aria-label="Artículo destacado">
+          <div class="imgwrap">
+            <img src="https://images.pexels.com/photos/145939/pexels-photo-145939.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Jaguar caminando silencioso en la selva tropical">
+          </div>
+          <div class="card-body">
+            <div class="kicker">Artículo destacado</div>
+            <div class="title">El jaguar, sombra dorada que protege los ríos de América</div>
+            <div class="meta"><span>7 min</span><span class="tag" style="background:rgba(106,170,117,0.12);color:var(--secondary);padding:0.2rem 0.5rem;border-radius:999px;border:1px solid rgba(106,170,117,0.18)">Vida salvaje</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ARTÍCULOS DESTACADOS -->
+    <section id="destacados">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Artículos destacados</div>
+            <h2 class="section-title">Historias que te llevan al corazón del planeta</h2>
+            <p class="section-desc">Desde las profundidades de la selva hasta los hielos eternos: reportajes con fotografía impactante y narrativa que explica, conmueve y moviliza.</p>
+          </div>
+          <div class="section-actions">
+            <a href="#suscripciones" class="section-link" style="font-size:0.85rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted)">Explorar más ↗</a>
+          </div>
+        </div>
+
+        <div class="articles-grid">
+          <!-- Card 1 -->
+          <article class="article-card">
+            <div class="article-img"><img src="https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Manada de elefantes caminando en la sabana"></div>
+            <div class="article-body">
+              <div class="eyebrow">Sabana africana</div>
+              <div class="article-title">Las madres elefantes que heredan la memoria del agua</div>
+              <div class="excerpt">Matriarcas experimentadas guían a su manada a sitios de agua ocultos, memoria que salva vidas en sequías extremas.</div>
+              <div class="meta-row"><div>5 min · Fotogalería</div><div class="tag">Conservación</div></div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="article-card">
+            <div class="article-img"><img src="https://images.pexels.com/photos/34092/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1400" alt="Bosque nublado"></div>
+            <div class="article-body">
+              <div class="eyebrow">Bosques nublados</div>
+              <div class="article-title">Donde la niebla respira: el bosque que fabrica lluvia</div>
+              <div class="excerpt">Árboles antiguos capturan las nubes y alimentan ríos, una cadena vital que mantiene ecosistemas enteros.</div>
+              <div class="meta-row"><div>6 min · Mapa interactivo</div><div class="tag">Clima</div></div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="article-card">
+            <div class="article-img"><img src="https://images.pexels.com/photos/462162/pexels-photo-462162.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Tortuga marina nadando"></div>
+            <div class="article-body">
+              <div class="eyebrow">Mares tropicales</div>
+              <div class="article-title">Las tortugas que cruzan océanos guiadas por un mapa invisible</div>
+              <div class="excerpt">Siguen rutas magnéticas para regresar a la playa donde nacieron; historias de orientación y supervivencia.</div>
+              <div class="meta-row"><div>4 min · Video 4K</div><div class="tag">Migraciones</div></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTORIA -->
+    <section id="historia">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Historia</div>
+            <h2 class="section-title">La huella de las civilizaciones en la naturaleza</h2>
+            <p class="section-desc">Los paisajes que admiramos habitan historias antiguas, mitos y rutas que conectan culturas con la tierra.</p>
+          </div>
+        </div>
+
+        <div class="articles-grid" style="grid-template-columns:repeat(3,1fr)">
+          <article class="article-card">
+            <div class="article-img"><img src="https://images.pexels.com/photos/367238/pexels-photo-367238.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Ruinas antiguas en selva"></div>
+            <div class="article-body">
+              <div class="eyebrow">Selva y ruinas</div>
+              <div class="article-title">Ciudades escondidas: cuando la selva se traga la historia</div>
+              <div class="excerpt">Bajo las hojas se ocultan observatorios astronómicos y plazas: la selva que guarda rastros del pasado.</div>
+              <div class="meta-row"><div>8 min · Ilustraciones</div><div class="tag">Arqueología</div></div>
+            </div>
+          </article>
+
+          <article class="article-card">
+            <div class="article-img"><img src="https://images.pexels.com/photos/1125776/pexels-photo-1125776.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Hombre en canoa por río"></div>
+            <div class="article-body">
+              <div class="eyebrow">Pueblos del río</div>
+              <div class="article-title">Guardianes del agua: historias orales que salvan un río</div>
+              <div class="excerpt">Las leyendas del río se transforman hoy en herramientas para defender el caudal frente a la contaminación.</div>
+              <div class="meta-row"><div>6 min · Audio</div><div class="tag">Cultura</div></div>
+            </div>
+          </article>
+
+          <article class="article-card">
+            <div class="article-img"><img src="https://images.pexels.com/photos/34950/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1400" alt="Montañas y ruinas"></div>
+            <div class="article-body">
+              <div class="eyebrow">Paisajes</div>
+              <div class="article-title">Senderos antiguos que moldearon el paisaje</div>
+              <div class="excerpt">Rutas comerciales y agrícolas que con el tiempo dejaron huellas visibles en el territorio.</div>
+              <div class="meta-row"><div>7 min · Mapas</div><div class="tag">Relatos</div></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CIENCIA -->
+    <section id="ciencia">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Ciencia</div>
+            <h2 class="section-title">Exploración moderna: tecnología, datos y conservación</h2>
+            <p class="section-desc">Drones, IA, satélites y trabajo de campo que muestran cómo la ciencia protege ecosistemas y especies.</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="article-card" style="display:flex;flex-direction:column">
+            <div class="article-img"><img src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Dron sobre bosque"></div>
+            <div class="article-body">
+              <div class="eyebrow">Tecnología</div>
+              <div class="article-title">Drones que vigilan la selva sin perturbarla</div>
+              <div class="excerpt">Sensores térmicos y cámaras permiten monitorear fauna sin ingresar a áreas sensibles.</div>
+              <div class="meta-row"><div>5 min</div><div class="tag">IA & Drones</div></div>
+            </div>
+          </div>
+
+          <div style="display:grid;gap:1rem">
+            <div class="article-card" style="height:100%">
+              <div class="article-img"><img src="https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Satélite y mapa"></div>
+              <div class="article-body">
+                <div class="eyebrow">Satélites</div>
+                <div class="article-title">Mapear cambios: cómo se detecta la deforestación</div>
+                <div class="excerpt">Algoritmos que analizan imágenes para alertar sobre corte ilegal y pérdida de cobertura vegetal.</div>
+                <div class="meta-row"><div>4 min</div><div class="tag">Observación</div></div>
+              </div>
+            </div>
+
+            <div class="article-card">
+              <div class="article-img"><img src="https://images.pexels.com/photos/256381/pexels-photo-256381.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Científico en laboratorio"></div>
+              <div class="article-body">
+                <div class="eyebrow">Investigación</div>
+                <div class="article-title">Microdocumentales: ciencia contada en 60 segundos</div>
+                <div class="excerpt">Microdocumentales que educan y abren la puerta a la ciencia entre jóvenes.</div>
+                <div class="meta-row"><div>2 min · Video</div><div class="tag">Educación</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SALUD -->
+    <section id="salud">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Salud del planeta</div>
+            <h2 class="section-title">Señales que nos indican la salud de los ecosistemas</h2>
+            <p class="section-desc">Indicadores clave: arrecifes, glaciares, migraciones y calidad del agua.</p>
+          </div>
+        </div>
+
+        <div class="articles-grid" style="grid-template-columns:repeat(3,1fr)">
+          <article class="article-card">
+            <div class="article-img"><img src="https://images.pexels.com/photos/256401/pexels-photo-256401.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Arrecife coralino"></div>
+            <div class="article-body">
+              <div class="eyebrow">Océanos</div>
+              <div class="article-title">Arrecifes que resisten: casos de esperanza</div>
+              <div class="excerpt">Proyectos de restauración coralina y comunidades que impulsan recuperación.</div>
+              <div class="meta-row"><div>6 min</div><div class="tag">Conservación</div></div>
+            </div>
+          </article>
+
+          <article class="article-card">
+            <div class="article-img"><img src="https://images.pexels.com/photos/236047/pexels-photo-236047.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Glaciar"></div>
+            <div class="article-body">
+              <div class="eyebrow">Hielos</div>
+              <div class="article-title">Glaciares que hablan: mediciones que cuentan la historia del clima</div>
+              <div class="excerpt">Los hielos nos cuentan cuánto ha cambiado el planeta en décadas.</div>
+              <div class="meta-row"><div>7 min</div><div class="tag">Clima</div></div>
+            </div>
+          </article>
+
+          <article class="article-card">
+            <div class="article-img"><img src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Investigación de campo"></div>
+            <div class="article-body">
+              <div class="eyebrow">Campo</div>
+              <div class="article-title">Monitoreo ciudadano: datos que ayudan a la ciencia</div>
+              <div class="excerpt">Colectas de observaciones locales que alimentan bases de datos globales.</div>
+              <div class="meta-row"><div>5 min</div><div class="tag">Participación</div></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section id="galeria">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Galería</div>
+            <h2 class="section-title">Imágenes que cuentan historias</h2>
+            <p class="section-desc">Galería 4K con descripciones cortas y créditos. Haz click para ampliar.</p>
+          </div>
+        </div>
+
+        <div class="gallery-grid" id="gallery">
+          <div class="gallery-item" tabindex="0" onclick="openLightbox('https://images.pexels.com/photos/145939/pexels-photo-145939.jpeg?auto=compress&cs=tinysrgb&w=1600')" role="button">
+            <img src="https://images.pexels.com/photos/145939/pexels-photo-145939.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Jaguar en la selva">
+            <div class="gallery-caption">Jaguar en la selva</div>
+          </div>
+          <div class="gallery-item" onclick="openLightbox('https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&w=1600')">
+            <img src="https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Elefantes al atardecer">
+            <div class="gallery-caption">Manada al atardecer</div>
+          </div>
+          <div class="gallery-item" onclick="openLightbox('https://images.pexels.com/photos/462162/pexels-photo-462162.jpeg?auto=compress&cs=tinysrgb&w=1600')">
+            <img src="https://images.pexels.com/photos/462162/pexels-photo-462162.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Tortuga marina">
+            <div class="gallery-caption">Tortuga marina</div>
+          </div>
+          <div class="gallery-item" onclick="openLightbox('https://images.pexels.com/photos/6210/forest-trees-fog-foggy.jpg?auto=compress&cs=tinysrgb&w=1600')">
+            <img src="https://images.pexels.com/photos/6210/forest-trees-fog-foggy.jpg?auto=compress&cs=tinysrgb&w=800" alt="Bosque entre la niebla">
+            <div class="gallery-caption">Bosque entre la niebla</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- POSTER / PROMO -->
+    <section id="poster">
+      <div class="container">
+        <div class="poster">
+          <div class="poster-visual">
+            <img src="https://images.pexels.com/photos/417174/pexels-photo-417174.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Poster visual - paisaje">
+          </div>
+          <div class="poster-copy">
+            <div class="poster-copy-title">Descarga el póster: "La selva que respira"</div>
+            <div class="poster-copy-text">Suscríbete y descarga un póster en alta resolución para impresión. Ideal para aulas y presentaciones.</div>
+            <div class="poster-tags">
+              <div class="tag">Impresión</div><div class="tag">Educativo</div><div class="tag">Póster 4K</div>
+            </div>
+            <div style="margin-top:0.8rem">
+              <button class="btn btn-primary" onclick="openSubscribe()">Suscríbete y descarga</button>
+              <button class="btn btn-ghost" onclick="document.getElementById('galeria').scrollIntoView({behavior:'smooth'})">Ver galería</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORO -->
+    <section id="foros">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Foro</div>
+            <h2 class="section-title">Únete a la conversación</h2>
+            <p class="section-desc">Comparte observaciones, preguntas y proyectos con educadores, exploradores y lectores.</p>
+          </div>
+        </div>
+
+        <div class="forum-grid">
+          <div class="forum-card">
+            <h3>Proyectos escolares</h3>
+            <p class="muted">Cómo llevar un proyecto de conservación al aula.</p>
+            <ul style="margin-top:0.6rem">
+              <li>Ideas prácticas</li><li>Recursos descargables</li><li>Testimonios</li>
+            </ul>
+          </div>
+
+          <div class="forum-card">
+            <h3>Fotografía de campo</h3>
+            <p class="muted">Consejos para capturar fauna sin perturbarla.</p>
+            <ul style="margin-top:0.6rem">
+              <li>Equipo recomendado</li><li>Ética en campo</li><li>Composición</li>
+            </ul>
+          </div>
+
+          <div class="forum-card">
+            <h3>Observaciones ciudadanas</h3>
+            <p class="muted">Sube tus avistamientos para apoyar ciencia participativa.</p>
+            <ul style="margin-top:0.6rem">
+              <li>Formato de reporte</li><li>Plataformas</li><li>Casos de éxito</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUSCRIPCIONES / NEWSLETTER -->
+    <section id="suscripciones">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Suscripciones</div>
+            <h2 class="section-title">Recibe historias y recursos en tu correo</h2>
+            <p class="section-desc">Newsletter semanal con artículos destacados, material educativo y descargas.</p>
+          </div>
+        </div>
+
+        <div class="two-col" style="align-items:start">
+          <div class="newsletter">
+            <h3 style="margin-bottom:0.4rem">Suscríbete al boletín</h3>
+            <p class="muted" style="margin-bottom:0.8rem">Correo con historias seleccionadas, pósters y actividades para aula.</p>
+            <label for="email" class="muted">Correo electrónico</label>
+            <input id="email" type="email" placeholder="tu@correo.com" aria-label="Correo electrónico para suscripción">
+            <div class="row" style="margin-top:0.8rem">
+              <button class="btn btn-primary" onclick="subscribeFromInput()">Suscribirme</button>
+              <button class="btn btn-ghost" onclick="openModalInfo()">¿Qué recibiré?</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="subs-highlight" style="padding:0.9rem;border-radius:12px;border:1px dashed rgba(42,111,151,0.12);background:linear-gradient(180deg,#fff,#fbfdff)">
+              <strong style="color:var(--primary)">Beneficios:</strong>
+              <ul style="margin-top:0.6rem">
+                <li>Acceso a pósters y material descargable</li>
+                <li>Alertas sobre reportajes exclusivos</li>
+                <li>Invitaciones a webinars y microdocumentales</li>
+              </ul>
+              <p class="muted" style="margin-top:0.6rem">Cancelación fácil en cualquier momento.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div style="display:flex;gap:1.2rem;align-items:center;justify-content:space-between;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:700;color:var(--text-strong)">EXPLORA · TIERRA</div>
+            <div class="muted" style="margin-top:0.35rem">Edición especial · Contenido educativo y visual</div>
+          </div>
+
+          <div style="display:flex;gap:1rem;align-items:center">
+            <a href="#inicio" class="muted">Inicio</a>
+            <a href="#destacados" class="muted">Destacados</a>
+            <a href="#suscripciones" class="muted">Suscripciones</a>
+            <a href="#foros" class="muted">Foros</a>
+          </div>
+        </div>
+
+        <div class="footer-inner" style="margin-top:1rem">
+          <div class="muted">© <span id="year"></span> Explora Tierra · Todos los derechos reservados</div>
+          <div class="muted">Hecho con ❤️ · National Geographic style</div>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- LIGHTBOX / MODALES -->
+  <div id="lightbox" class="modal" role="dialog" aria-hidden="true" onclick="closeLightbox(event)">
+    <div class="modal-content" role="document" style="position:relative;">
+      <button class="close" aria-label="Cerrar" onclick="closeLightbox(event)">✕</button>
+      <img id="lightbox-img" src="" alt="">
+    </div>
+  </div>
+
+  <div id="subscribeModal" class="modal" role="dialog" aria-hidden="true" onclick="closeSubscribeModal(event)">
+    <div class="modal-content" role="document" style="position:relative;padding:1.1rem;">
+      <button class="close" aria-label="Cerrar" onclick="closeSubscribeModal(event)">✕</button>
+      <div style="display:grid;gap:0.6rem">
+        <h3 style="margin-top:0">Gracias por suscribirte</h3>
+        <p class="muted">Recibirás un correo para confirmar tu suscripción y luego el enlace para descargar el póster en alta resolución.</p>
+        <div style="display:flex;gap:0.6rem;margin-top:0.5rem">
+          <button class="btn btn-primary" onclick="closeSubscribeModal()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="infoModal" class="modal" role="dialog" aria-hidden="true" onclick="closeInfoModal(event)">
+    <div class="modal-content" role="document" style="position:relative;padding:1rem;">
+      <button class="close" aria-label="Cerrar" onclick="closeInfoModal(event)">✕</button>
+      <div style="padding:0.8rem">
+        <h3>¿Qué recibiré en el boletín?</h3>
+        <ul style="margin-top:0.5rem;color:var(--text-main)">
+          <li>Historias destacadas y galerías exclusivas</li>
+          <li>Material educativo y pósters descargables</li>
+          <li>Invitaciones a webinars y microdocumentales</li>
+        </ul>
+        <p class="muted" style="margin-top:0.6rem">Prometemos solo correos relevantes y posibilidad de cancelar en cualquier momento.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // small helpers
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // nav toggle
+    function toggleMenu(){
+      document.body.classList.toggle('nav-open');
+    }
+
+    // smooth scrolling for in-page links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', function(e){
+        const href = this.getAttribute('href');
+        if(href && href.startsWith('#')){
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+          // close mobile nav
+          if(document.body.classList.contains('nav-open')) document.body.classList.remove('nav-open');
+        }
+      });
+    });
+
+    // lightbox open
+    function openLightbox(src){
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = src;
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden','false');
+    }
+    function closeLightbox(e){
+      if(e && e.target && e.target.classList && e.target.classList.contains('modal')) {
+        // clicked background
+      }
+      const lb = document.getElementById('lightbox');
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden','true');
+      document.getElementById('lightbox-img').src = '';
+    }
+
+    // subscribe modal
+    function openSubscribe(){
+      const m = document.getElementById('subscribeModal');
+      m.classList.add('open'); m.setAttribute('aria-hidden','false');
+    }
+    function closeSubscribeModal(e){
+      const m = document.getElementById('subscribeModal');
+      m.classList.remove('open'); m.setAttribute('aria-hidden','true');
+    }
+
+    // info modal
+    function openModalInfo(){
+      const m = document.getElementById('infoModal');
+      m.classList.add('open'); m.setAttribute('aria-hidden','false');
+    }
+    function closeInfoModal(e){
+      const m = document.getElementById('infoModal');
+      m.classList.remove('open'); m.setAttribute('aria-hidden','true');
+    }
+
+    // subscribe from input
+    function subscribeFromInput(){
+      const em = document.getElementById('email').value;
+      if(!em || !em.includes('@')) {
+        alert('Introduce un correo válido');
+        return;
+      }
+      // Here you would integrate with an email backend. We'll show modal.
+      openSubscribe();
+      // clear field
+      document.getElementById('email').value = '';
+    }
+
+    // close modal by clicking outside content
+    function closeSubscribeModal(event){
+      if(!event) return;
+      if(event.target && event.target.classList && event.target.classList.contains('modal')){
+        event.currentTarget?.classList && event.currentTarget.classList.remove('open');
+      }
+      document.getElementById('subscribeModal').classList.remove('open');
+      document.getElementById('subscribeModal').setAttribute('aria-hidden','true');
+    }
+
+    // general close helpers for other modals
+    function closeInfoModal(event){
+      if(event && event.target && event.target.classList && event.target.classList.contains('modal')){
+        document.getElementById('infoModal').classList.remove('open');
+        document.getElementById('infoModal').setAttribute('aria-hidden','true');
+      } else {
+        document.getElementById('infoModal').classList.remove('open');
+        document.getElementById('infoModal').setAttribute('aria-hidden','true');
+      }
+    }
+
+    // Improve accessibility: close lightbox with ESC
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape'){
+        document.querySelectorAll('.modal.open').forEach(m=>{
+          m.classList.remove('open');
+          m.setAttribute('aria-hidden','true');
+        });
+      }
+    });
+
+    // Close lightbox when clicking the close button or backdrop
+    document.getElementById('lightbox').addEventListener('click', function(e){
+      if(e.target === this) { this.classList.remove('open'); this.setAttribute('aria-hidden','true'); }
+    });
+
+    // accessible focus trapping (lightweight): focus first button inside modal when opened
+    const observer = new MutationObserver((records)=>{
+      records.forEach(rec=>{
+        if(rec.target.classList.contains('open')){
+          const focusable = rec.target.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          if(focusable) focusable.focus();
+        }
+      });
+    });
+    document.querySelectorAll('.modal').forEach(m=>observer.observe(m,{attributes:true,attributeFilter:['class']}));
+  </script>
+
+</body>
+</html>
